@@ -4,9 +4,8 @@ import * as React from 'react';
 import AppBar from '@mui/material/AppBar';
 import Button from '@mui/material/Button';
 import Card from '@mui/material/Card';
-import CardActions from '@mui/material/CardActions';
+import CardHeader from '@mui/material/CardHeader';
 import CardContent from '@mui/material/CardContent';
-import CardMedia from '@mui/material/CardMedia';
 import CssBaseline from '@mui/material/CssBaseline';
 import Grid from '@mui/material/Grid';
 import Stack from '@mui/material/Stack';
@@ -84,7 +83,9 @@ class WordPage extends React.Component {
                             {cards.map((card) => (
                                 <Grid item key={card}> 
                                     <Card sx={{ width: '20vw', height: '80vh', display: 'flex', flexDirection: 'column' }}>
-                                    
+                                    {/* <CardHeader 
+                                        title="Demo Clip"
+                                    /> */}
                                     <WordCard
                                         audioFile={D2_audio}
                                         lipData={testLipSeg}
@@ -94,6 +95,7 @@ class WordPage extends React.Component {
                                         segStart={testSegStart}
                                         segEnd={testSegEnd}
                                     />
+                                    
                                     </Card>
                                 </Grid>
                             ))}

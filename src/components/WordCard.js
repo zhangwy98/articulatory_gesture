@@ -10,6 +10,8 @@ import Stack from '@mui/material/Stack';
 import Paper from '@mui/material/Paper';
 import Checkbox from '@mui/material/Checkbox';
 import FormControlLabel from '@mui/material/FormControlLabel';
+import Typography from '@mui/material/Typography';
+
 
 class WordCard extends React.Component {
     constructor(props) {
@@ -109,36 +111,61 @@ class WordCard extends React.Component {
     render() {
         return (
                 <div>
-                    <Box sx={{marginTop: 2}}>
-                        <Stack alignItems="center" justifyContent="center" direction="row" spacing={1}>
-                            <FormControlLabel 
-                                label='Lip'
-                                control={<Checkbox 
-                                    checked={this.state.showLip} 
-                                    onChange={this.handleChangeLip}
-                                />}
-                            />
-                            <FormControlLabel 
-                                label='Tip'
-                                control={<Checkbox 
-                                    checked={this.state.showTip} 
-                                    onChange={this.handleChangeTip}
-                                    label='Tip'
-                                />}
-                            />
-                            <FormControlLabel 
-                                label='Dorsum'
-                                control={<Checkbox 
-                                    checked={this.state.showDorsum} 
-                                    onChange={this.handleChangeDorsum}
-                                    label='Dorsum'
-                                />}
-                            />
+                    <Box sx={{paddingTop: '1vh'}}>
+                        <Stack alignItems="center"  justifyContent="center" 
+                            direction="row" spacing={2}>
+                            <Typography sx={{width: '9vw'}} align='left' variant="h5">
+                                Demo 
+                            </Typography>
+                            <Box sx={{ width: '6vw'}}>
+                            {this.state.play === false && 
+                                <Button 
+                                    variant="contained" onClick={this.playSegment}
+                                    sx={{ height: 40, width: 80, marginTop: 0.5}}
+                                >play</Button>} 
+                            {this.state.play === true && 
+                                <Button 
+                                    variant="contained" onClick={this.playSegment} disabled 
+                                    sx={{ height: 40, width: 80, marginTop: 0.5}}
+                                >play</Button>}
+                            </Box>
                         </Stack>
                     </Box>
-                    <Box sx={{ width: '20vw', paddingLeft: '2vw', paddingTop: 1}}>
-                        <Stack direction="row" spacing={4}>
-                            <Box sx={{ width: '8vw', height: '8vh'}}>
+                    <Box sx={{ width: '20vw', paddingTop: '2vh'}}>
+                        <Stack direction="row" 
+                            // alignItems="center" 
+                            justifyContent="center" 
+                            spacing={4}>
+                            <Box sx={{width: '8vw'}}>
+                                <Stack direction="column">
+                                <Stack  direction="row" spacing={0}>
+                                    <FormControlLabel 
+                                        label='Lip'
+                                        control={<Checkbox size='small' style={{paddingTop: 5, paddingBottom: 5}}
+                                            checked={this.state.showLip} 
+                                            onChange={this.handleChangeLip}
+                                        />}
+                                    />
+                                    <FormControlLabel 
+                                        label='Tip'
+                                        control={<Checkbox size='small' style={{paddingTop: 5, paddingBottom: 5}}
+                                            checked={this.state.showTip} 
+                                            onChange={this.handleChangeTip}
+                                            label='Tip'
+                                        />}
+                                    />
+                                </Stack>
+                                <FormControlLabel 
+                                        label='Dorsum'
+                                        control={<Checkbox size='small' style={{paddingTop: 5, paddingBottom: 5}}
+                                            checked={this.state.showDorsum} 
+                                            onChange={this.handleChangeDorsum}
+                                            label='Dorsum'
+                                        />}
+                                    />
+                                </Stack>
+                            </Box>
+                            <Box sx={{ width: '6vw', height: '8vh'}}>
                                 <FormControl sx={{height: '8vh'}} fullWidth>
                                     <InputLabel sx={{paddingLeft: '10px', paddingTop: '2px'}} variant="standard" >
                                         Play Speed
@@ -157,18 +184,7 @@ class WordCard extends React.Component {
                                     </Select>
                                 </FormControl>
                             </Box>
-                            <Box sx={{ width: '8vh'}}>
-                            {this.state.play === false && 
-                                <Button 
-                                    variant="contained" onClick={this.playSegment}
-                                    sx={{ height: 45, width: 60, marginTop: 0.5}}
-                                >play</Button>} 
-                            {this.state.play === true && 
-                                <Button 
-                                    variant="contained" onClick={this.playSegment} disabled 
-                                    sx={{ height: 45, width: 60, marginTop: 0.5}}
-                                >play</Button>}
-                            </Box>
+                            
                         </Stack>
                     </Box>
                     {(this.state.play === true || this.state.playEnd === true) && 
