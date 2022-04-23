@@ -20,7 +20,10 @@ import A1_annotation from '../public/A1_annotation.json'
 import A1_audio from '../public/A1_audio.wav'
 import A1_combined_gesture from '../public/A1_combined_gesture.json'
 import A1_typical_example from '../public/A1_typical_example.json'
+import A1_coarticulation from '../public/A1_coarticulation.json'
+import D2_coarticulation from '../public/D2_coarticulation.json'
 import NarrativeCard from './NarrativeCard';
+import WordCard from './WordCard';
 
 const theme = createTheme();
 
@@ -180,7 +183,6 @@ class NarrativePage extends React.Component {
     }
 
     render() {
-        console.log(A1_typical_example['annotation']['lip'])
         const typicalExampleLipSegTime = A1_typical_example['annotation']['lip'].map((item) => this.handleTypicalExampleMap(item, 'lip'))
         
         const typicalExampleTipSegTime = A1_typical_example['annotation']['tip'].map((item) => this.handleTypicalExampleMap(item, 'tip'))
@@ -237,7 +239,6 @@ class NarrativePage extends React.Component {
                         segEnd={combinedGestureSegTime.lip.segEnd}
                         showLip={true} showTip={false} showDorsum={false}
                         sampleRate={sampleRate} playbackRate={0.5}
-                        type="exploration"
                         title="Lip" 
                         text="chea[p] [v]ersion"
                     />
@@ -272,6 +273,47 @@ class NarrativePage extends React.Component {
                         text="loo[k] [g]reat"
                     />
                 </Grid>
+            </Grid>
+        )
+        
+        const coarticulationItem = ["ripped", "good pants", "special"]
+        const coarticulationItemText = {
+            "ripped":
+                "[p] (lip plosive) [t] (tip plosive)",
+            "good pants":
+                "[d] (tip plosive) [p] (lip plosive)",
+            "special":
+                "[s] (lip fricative) [p] (lip plosive)"
+        }
+        const coarticulationSegTime = coarticulationItem.map((item) => {
+            const segStart = parseInt(A1_coarticulation.annotation[item].startTime * sampleRate);
+            const segEnd = parseInt(A1_coarticulation.annotation[item].endTime * sampleRate);
+            return {
+                'segStart': segStart,
+                'segEnd': segEnd,
+                'audioSeg': A1_gesture.audio.slice(segStart, segEnd),
+                'lipSeg': A1_gesture.lip.slice(segStart, segEnd),
+                'tipSeg': A1_gesture.tip.slice(segStart, segEnd),
+                'title': item,
+                'sampleRate': sampleRate
+            }
+        })
+        const coarticulationCards = coarticulationSegTime.map((item) => (
+            <Grid item key={item.title}>
+                <NarrativeCard
+                    audioFile={A1_audio}
+                    audioData={item.audioSeg}
+                    segStart={item.segStart} segEnd={item.segEnd}
+                    lipData={item.lipSeg} tipData={item.tipSeg} dorsumData={null}
+                    showLip={true} showTip={true} showDorsum={false}
+                    sampleRate={item.sampleRate} playbackRate={0.5}
+                    title={item.title} text={coarticulationItemText[item.title]}
+                />
+            </Grid>
+        ))
+        const coarticulationElement = (
+            <Grid container>
+                {coarticulationCards}
             </Grid>
         )
 
@@ -323,7 +365,7 @@ class NarrativePage extends React.Component {
                     
 
                             <Box 
-                                sx={{ flexGrow: 1, bgcolor: 'background.paper', display: 'flex', height: 1000}}
+                                sx={{ flexGrow: 1, bgcolor: 'background.paper', display: 'flex', height: 'auto'}}
                             >   
                                 <Tabs 
                                     orientation='vertical'
@@ -400,12 +442,13 @@ class NarrativePage extends React.Component {
                                     <p></p>
                                     <p></p>
                                     <Paragraph 
-                                        text="It can be that the tongue gesture takes place when the tongue is not involved in the earlier sound production. "
+                                        text="It can be that the tongue gesture takes place when the tongue is not involved in the earlier sound production. As is shown in the left [ripped] example, the production of [p] does not involve the gesture of the tongue tip, and therefore it is possible for the tip to prepare raising up for the following [t]."
                                     />
                                     <p></p>
                                     <Paragraph
-                                        text="It can also be that though the earlier gesture interferes with the next gesture,  with the cost of the incompleteness of the previous sound."
+                                        text="It can also be that though the earlier gesture interferes with the next gesture,  with the cost of the incompleteness of the previous sound. From the middle [good pants] example, though the raise up of the lip will interfere with the production of [d], the preparation happens at the cost of a less clear [d] (check that in the audio). On the contrary, for the right [special] example, [s] and [p] are both quite clear and therefore the gesture of [p] and only happen after [s] (we can see that the tongue tip starts raising up when the tip is lowering down)."
                                     />
+                                    {coarticulationElement}
                         
                                 </TabPanel>
                             </Box>

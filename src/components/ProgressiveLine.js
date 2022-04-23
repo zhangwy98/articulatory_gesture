@@ -1,5 +1,4 @@
 import React, { Component } from 'react'
-import classes from "./LineGraph.module.css";
 import Box from '@mui/material/Box';
 
 import { Chart, registerables } from 'chart.js';
@@ -148,7 +147,6 @@ class OneProgressiveLine extends Component {
 class ProgressiveLine extends Component {
     constructor(props) {
         super(props)
-        console.log(props)
     }
 
     render() {
@@ -190,9 +188,6 @@ class ProgressiveLine extends Component {
 }
 
 class ExplorationLine extends Component {
-    constructor(props) {
-        super(props)
-    }
     render() {
         return (
             <ProgressiveLine 
@@ -214,9 +209,6 @@ class ExplorationLine extends Component {
 
 
 class NarrativeLine extends Component {
-    constructor(props) {
-        super(props)
-    }
 
     render() {
         return(

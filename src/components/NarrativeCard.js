@@ -19,7 +19,6 @@ class NarrativeCard extends React.Component {
     constructor(props) {
         super(props)
         // initialize audio
-        console.log(this.props.audioFile)
         this.audio = new Audio(this.props.audioFile)
 
         // initialize gesture data
