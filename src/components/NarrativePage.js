@@ -143,7 +143,7 @@ class NarrativePage extends React.Component {
         this.state = {
             selectedWords: [],
             collection: A1_collection,
-            contentValue: 1
+            contentValue: 0
         }
         this.handleContentSelection = this.handleContentSelection.bind(this)
     }
@@ -295,12 +295,33 @@ class NarrativePage extends React.Component {
                                 >
                                     Articulatory Gesture Narrative
                                 </Typography>
-                                <Typography 
+                                {/* <Typography 
                                     variant="h6" 
                                     align="left"
                                     color="text.secondary"
                                     paragraph
-                                >The narrative section gives a brief introduction to the articulatory gestures with our selected examples. You can follow our examples first for a basic overview of how articulatory gestures are related to the production of the sounds and then continue your own tour with the exploration section. </Typography>
+                                >The narrative section gives a brief introduction to the articulatory gestures with our selected examples. You can follow our examples first for a basic overview of how articulatory gestures are related to the production of the sounds and then continue your own tour with the exploration section. </Typography> */}
+                                
+                                <Typography
+                                    variant="h6"
+                                    align='left'
+                                    color="text.secondary"
+                                    paragraph
+                                >
+                                    Let’s start by going over some generally applicable rules for articulator gestures and then walk into some fun facts.
+                                </Typography>
+                                
+                                <Typography
+                                    variant="h6"
+                                    align='left'
+                                    color="text.secondary"
+                                    paragraph
+                                    sx={{paddingBottom: "10px"}}
+                                >
+                                   To form the constriction for a consonant, there will be a raise up in the corresponding articulator. This articulatory gesture happens before the real production to prepare for actual production.
+                                </Typography>
+                    
+
                             <Box 
                                 sx={{ flexGrow: 1, bgcolor: 'background.paper', display: 'flex', height: 1000}}
                             >   
@@ -313,29 +334,12 @@ class NarrativePage extends React.Component {
                                     sx={{ borderRight: 1, borderColor: 'divider', width: 180 }}
         
                                 >
-                                    <Tab label='Introduction' {...a11yProps(0)} />
-                                    <Tab label='Lip Gesture' {...a11yProps(1)} />
-                                    <Tab label='Tip Gesture' {...a11yProps(2)} />
-                                    <Tab label='Dorsum Gesture' {...a11yProps(3)} />
-                                    <Tab label='Fun Facts' {...a11yProps(4)} />
+                                    <Tab label='Lip Gesture' {...a11yProps(0)} />
+                                    <Tab label='Tip Gesture' {...a11yProps(1)} />
+                                    <Tab label='Dorsum Gesture' {...a11yProps(2)} />
+                                    <Tab label='Fun Facts' {...a11yProps(3)} />
                                 </Tabs>
                                 <TabPanel value={this.state.contentValue} index={0}>
-                                    <Typography
-                                        align='left'
-                                        width={800}
-                                        variant='body1'
-                                    >
-                                    As you may know, the production of consonants requires the constriction formed by certain articulators. Different articulators are involved in the constriction of different consonants. In this demo, we mainly focus on the following pairs:
-                                    </Typography>
-                                </TabPanel>
-                                <TabPanel value={this.state.contentValue} index={1}>
-                                    <Paragraph 
-                                        text="Let’s first go over some generally applicable rules for articulator gestures." 
-                                    />
-                                    <Paragraph
-                                        text="To form the constriction for a consonant, there will be a raise up in the corresponding articulator. This articulatory gesture happens before the real production to prepare for actual production.
-                                        "
-                                    />
                                     <TitleH3 
                                         text="Lip Gesture"
                                     />
@@ -343,7 +347,7 @@ class NarrativePage extends React.Component {
                                         {typicalExampleLipElement}
                                     </Grid>
                                 </TabPanel>
-                                <TabPanel value={this.state.contentValue} index={2}>
+                                <TabPanel value={this.state.contentValue} index={1}>
                                     <TitleH3
                                         text="Tip Gesture"  
                                     />
@@ -351,7 +355,7 @@ class NarrativePage extends React.Component {
                                         {typicalExampleTipElement}
                                     </Grid>
                                 </TabPanel>
-                                <TabPanel value={this.state.contentValue} index={3}>
+                                <TabPanel value={this.state.contentValue} index={2}>
                                     <TitleH3
                                         text="Dorsum Gesture"
                                     />                         
@@ -359,7 +363,7 @@ class NarrativePage extends React.Component {
                                         {typicalExampleDorsumElement}
                                     </Grid>
                                 </TabPanel>
-                                <TabPanel value={this.state.contentValue} index={4}>
+                                <TabPanel value={this.state.contentValue} index={3}>
                                     <Typography
                                         variant='h6'
                                         align='left'

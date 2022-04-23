@@ -12,7 +12,7 @@ import SearchIcon from '@mui/icons-material/Search';
 import MenuBookIcon from '@mui/icons-material/MenuBook';
 
 // Page component
-import HomePage from './HomePage';
+import HomePage from './components/HomePage';
 import WordPage from './components/WordPage';
 import NarrativePage from './components/NarrativePage';
 
