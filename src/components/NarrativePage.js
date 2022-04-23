@@ -1,13 +1,9 @@
 
    
 import * as React from 'react';
-import AppBar from '@mui/material/AppBar';
-import Button from '@mui/material/Button';
-import Card from '@mui/material/Card';
 import CssBaseline from '@mui/material/CssBaseline';
 import Grid from '@mui/material/Grid';
 import Box from '@mui/material/Box';
-import Toolbar from '@mui/material/Toolbar';
 import Typography from '@mui/material/Typography';
 import Container from '@mui/material/Container';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
@@ -24,9 +20,7 @@ import A1_annotation from '../public/A1_annotation.json'
 import A1_audio from '../public/A1_audio.wav'
 import A1_combined_gesture from '../public/A1_combined_gesture.json'
 import A1_typical_example from '../public/A1_typical_example.json'
-import WordCard from './WordCard';
 import NarrativeCard from './NarrativeCard';
-import { ProgressiveLine } from './ProgressiveLine';
 
 const theme = createTheme();
 
