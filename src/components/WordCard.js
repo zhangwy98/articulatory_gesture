@@ -1,28 +1,28 @@
 import React from 'react';
 import Button from '@mui/material/Button';
-import ProgressiveLine from './ProgressiveLine';
+import {ExplorationLine, ProgressiveLine} from './ProgressiveLine';
 import FormControl from '@mui/material/FormControl';
 import Select from '@mui/material/Select';
 import InputLabel from '@mui/material/InputLabel';
 import MenuItem from '@mui/material/MenuItem';
 import Box from '@mui/material/Box';
 import Stack from '@mui/material/Stack';
-import Paper from '@mui/material/Paper';
 import Checkbox from '@mui/material/Checkbox';
 import FormControlLabel from '@mui/material/FormControlLabel';
 import Typography from '@mui/material/Typography';
+import IconButton from '@mui/material/IconButton';
+import DeleteIcon from '@mui/icons-material/Delete';
+
 
 
 class WordCard extends React.Component {
     constructor(props) {
         super(props)
-        this.audioFile = props.audioFile
-        this.gestureFile = props.gestureFile
-
         // initialize audio
-        this.audio = new Audio(this.audioFile)
+        this.audio = new Audio(this.props.audioFile)
 
         // initialize gesture data
+        this.audioData = props.audioData
         this.lipData = props.lipData
         this.tipData = props.tipData
         this.dorsumData = props.dorsumData
@@ -49,6 +49,7 @@ class WordCard extends React.Component {
         this.handleChangeLip = this.handleChangeLip.bind(this)
         this.handleChangeTip = this.handleChangeTip.bind(this)
         this.handleChangeDorsum = this.handleChangeDorsum.bind(this)
+        this.handleDelete = this.handleDelete.bind(this)
     }
     componentDidMount() {
         this.audio.addEventListener('ended', () => this.setState({ play: false }));
@@ -108,16 +109,19 @@ class WordCard extends React.Component {
             showDorsum: !this.state.showDorsum
         })
     }
+    handleDelete() {
+        this.props.handleDelete(this.props.wordIdx)
+    }
     render() {
         return (
                 <div>
-                    <Box sx={{paddingTop: '1vh'}}>
+                    <Box sx={{paddingTop: '20px', width: 500}}>
                         <Stack alignItems="center"  justifyContent="center" 
-                            direction="row" spacing={2}>
-                            <Typography sx={{width: '9vw'}} align='left' variant="h5">
-                                Demo 
+                            direction="row" spacing={1}>
+                            <Typography sx={{width: 250}} align='left' variant="h4">
+                                {this.props.word} 
                             </Typography>
-                            <Box sx={{ width: '6vw'}}>
+                            <Box sx={{ width: 100}}>
                             {this.state.play === false && 
                                 <Button 
                                     variant="contained" onClick={this.playSegment}
@@ -129,14 +133,19 @@ class WordCard extends React.Component {
                                     sx={{ height: 40, width: 80, marginTop: 0.5}}
                                 >play</Button>}
                             </Box>
+                            <IconButton color='primary' 
+                                        onClick={this.handleDelete}
+                                        sx={{ width: 50, height: 50}}>
+                                <DeleteIcon sx={{ width: 30, height: 30}} />
+                            </IconButton>
                         </Stack>
                     </Box>
-                    <Box sx={{ width: '20vw', paddingTop: '2vh'}}>
+                    <Box sx={{paddingTop: '20px', width: 500}} >
                         <Stack direction="row" 
                             // alignItems="center" 
                             justifyContent="center" 
                             spacing={4}>
-                            <Box sx={{width: '8vw'}}>
+                            <Box sx={{width: 225}}>
                                 <Stack direction="column">
                                 <Stack  direction="row" spacing={0}>
                                     <FormControlLabel 
@@ -165,8 +174,8 @@ class WordCard extends React.Component {
                                     />
                                 </Stack>
                             </Box>
-                            <Box sx={{ width: '6vw', height: '8vh'}}>
-                                <FormControl sx={{height: '8vh'}} fullWidth>
+                            <Box sx={{ marginLeft: 50, width: 150}}>
+                                <FormControl sx={{height: 50}} fullWidth>
                                     <InputLabel sx={{paddingLeft: '10px', paddingTop: '2px'}} variant="standard" >
                                         Play Speed
                                     </InputLabel>
@@ -174,9 +183,10 @@ class WordCard extends React.Component {
                                         labelId="demo-simple-select-label"
                                         id="demo-simple-select"
                                         value={this.state.playbackRate}
-                                        label="  Play Speed"
+                                        label="Play Speed"
                                         onChange={this.handleRateChange}
                                         >
+                                        <MenuItem value={0.1}>0.1</MenuItem>
                                         <MenuItem value={0.25}>0.25</MenuItem>
                                         <MenuItem value={0.5}>0.5</MenuItem>
                                         <MenuItem value={0.75}>0.75</MenuItem>
@@ -187,21 +197,24 @@ class WordCard extends React.Component {
                             
                         </Stack>
                     </Box>
+                    <Box sx={{ width: 500, height: 600}} >
                     {(this.state.play === true || this.state.playEnd === true) && 
-                    <ProgressiveLine 
+                    <ExplorationLine 
                         showLip={this.state.showLip}
                         showTip={this.state.showTip}
                         showDorsum={this.state.showDorsum}
+                        audioData={this.audioData}
                         lipData={this.lipData}
                         tipData={this.tipData}
                         dorsumData={this.dorsumData}
                         sampleRate={this.gestureSampleRate}
-                        segStart={this.state.segStart}
-                        segEnd={this.state.segEnd}
+                        // segStart={this.state.segStart}
+                        // segEnd={this.state.segEnd}
                         playbackRate={this.state.playbackRate}
                         totalPlayCnt={this.state.totalPlayCnt}
                         key={this.state.totalPlayCnt}
                     /> }
+                    </Box>
                 </div>
         )
     }

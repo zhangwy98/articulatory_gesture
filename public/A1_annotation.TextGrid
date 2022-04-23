@@ -1,0 +1,126 @@
+File type = "ooTextFile"
+Object class = "TextGrid"
+
+xmin = 0 
+xmax = 6.515192743764172 
+tiers? <exists> 
+size = 3 
+item []: 
+    item [1]:
+        class = "IntervalTier" 
+        name = "word1" 
+        xmin = 0 
+        xmax = 6.515192743764172 
+        intervals: size = 13 
+        intervals [1]:
+            xmin = 0 
+            xmax = 0.8105021437328664 
+            text = "" 
+        intervals [2]:
+            xmin = 0.8105021437328664 
+            xmax = 1.194794563187078 
+            text = "good" 
+        intervals [3]:
+            xmin = 1.194794563187078 
+            xmax = 1.5753177835717593 
+            text = "" 
+        intervals [4]:
+            xmin = 1.5753177835717593 
+            xmax = 2.230315216838 
+            text = "look great" 
+        intervals [5]:
+            xmin = 2.230315216838 
+            xmax = 3.101416425257335 
+            text = "" 
+        intervals [6]:
+            xmin = 3.101416425257335 
+            xmax = 3.466378094715646 
+            text = "ripped" 
+        intervals [7]:
+            xmin = 3.466378094715646 
+            xmax = 3.7975022583963653 
+            text = "" 
+        intervals [8]:
+            xmin = 3.7975022583963653 
+            xmax = 4.248623056450181 
+            text = "look like" 
+        intervals [9]:
+            xmin = 4.248623056450181 
+            xmax = 4.516906137972516 
+            text = "" 
+        intervals [10]:
+            xmin = 4.516906137972516 
+            xmax = 5.07522498330278 
+            text = "version" 
+        intervals [11]:
+            xmin = 5.07522498330278 
+            xmax = 5.488525946729079 
+            text = "" 
+        intervals [12]:
+            xmin = 5.488525946729079 
+            xmax = 6.315127873581678 
+            text = "special" 
+        intervals [13]:
+            xmin = 6.315127873581678 
+            xmax = 6.515192743764172 
+            text = "" 
+    item [2]:
+        class = "IntervalTier" 
+        name = "word2" 
+        xmin = 0 
+        xmax = 6.515192743764172 
+        intervals: size = 11 
+        intervals [1]:
+            xmin = 0 
+            xmax = 1.0532534087174863 
+            text = "" 
+        intervals [2]:
+            xmin = 1.0532534087174863 
+            xmax = 1.5825686776669576 
+            text = "pants" 
+        intervals [3]:
+            xmin = 1.5825686776669576 
+            xmax = 2.2109794992508047 
+            text = "" 
+        intervals [4]:
+            xmin = 2.2109794992508047 
+            xmax = 2.718542085914681 
+            text = "however" 
+        intervals [5]:
+            xmin = 2.718542085914681 
+            xmax = 3.389035224366865 
+            text = "" 
+        intervals [6]:
+            xmin = 3.389035224366865 
+            xmax = 3.8410076229675547 
+            text = "pants" 
+        intervals [7]:
+            xmin = 3.8410076229675547 
+            xmax = 4.236538232958184 
+            text = "" 
+        intervals [8]:
+            xmin = 4.236538232958184 
+            xmax = 4.66192401987648 
+            text = "cheap" 
+        intervals [9]:
+            xmin = 4.66192401987648 
+            xmax = 5.017217830541194 
+            text = "" 
+        intervals [10]:
+            xmin = 5.017217830541194 
+            xmax = 5.715720628378624 
+            text = "kmart" 
+        intervals [11]:
+            xmin = 5.715720628378624 
+            xmax = 6.515192743764172 
+            text = "" 
+    item [3]:
+        class = "IntervalTier" 
+        name = "word3" 
+        xmin = 0 
+        xmax = 6.515192743764172 
+        intervals: size = 1 
+        intervals [1]:
+            xmin = 0 
+            xmax = 6.515192743764172 
+            text = "" 

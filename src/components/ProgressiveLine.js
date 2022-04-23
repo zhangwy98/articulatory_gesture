@@ -1,5 +1,6 @@
 import React, { Component } from 'react'
 import classes from "./LineGraph.module.css";
+import Box from '@mui/material/Box';
 
 import { Chart, registerables } from 'chart.js';
 import { CHART_COLORS } from './Utils'
@@ -22,11 +23,11 @@ class OneProgressiveLine extends Component {
         const data = [];
 
         for (let i = 0; i < this.props.data.length; i++ ) {
-            data.push({x: i, y: this.props.data[i]})
+            data.push({x: i / this.props.sampleRate, y: this.props.data[i]})
         }
 
         const dataLength = this.props.data.length;
-        const totalDuration = 1000 * dataLength / (this.sampleRate * this.playbackRate) ;
+        const totalDuration = 1000 * dataLength / (this.sampleRate * this.playbackRate);
         const delayBetweenPoints = totalDuration / dataLength;
 
         const animation = {
@@ -62,7 +63,7 @@ class OneProgressiveLine extends Component {
             type: 'line',
             data: {
                 datasets: [{
-                borderColor: CHART_COLORS.red,
+                borderColor: this.props.type === 'audio' ? CHART_COLORS.red : CHART_COLORS.red,
                 borderWidth: 1,
                 radius: 0,
                 data: data,
@@ -71,6 +72,8 @@ class OneProgressiveLine extends Component {
             },
             options: {
                 animation,
+                responsive: true,
+                maintainAspectRatio: false,
                 interaction: {
                     intersect: false
                 },
@@ -91,7 +94,11 @@ class OneProgressiveLine extends Component {
                 },
                 scales: {
                     x: {
-                        type: 'linear'
+                        type: 'linear',
+                        max: (dataLength + 10) / this.props.sampleRate,
+                    },
+                    y: {
+                        display: false
                     }
                 },
             }
@@ -100,11 +107,27 @@ class OneProgressiveLine extends Component {
     }
     render() {
         return (
-            <div className={classes.graphContainer}>
+            <div>
+                {this.props.componentType == "exploration" &&
+                <Box sx={{ margin: "10px 25px" }}>
+                    <canvas 
+                        height={130}
+                        width={300}
+                        id={this.type}
+                        ref={this.chartRef}
+                    />
+                </Box>
+            }
+            {this.props.componentType == "narrative" &&
+                <Box sx={{ margin: "10px 25px" }}>
                 <canvas 
+                    height={125}
+                    width={250}
                     id={this.type}
                     ref={this.chartRef}
                 />
+            </Box>
+            }
             </div>
         )
     }
@@ -115,30 +138,90 @@ class OneProgressiveLine extends Component {
 class ProgressiveLine extends Component {
     constructor(props) {
         super(props)
+        console.log(props)
     }
 
     render() {
         return (
-            <div>
+            <Box>
+                <OneProgressiveLine
+                    data={this.props.audioData} type="audio"
+                    sampleRate={this.props.sampleRate} playbackRate={this.props.playbackRate} 
+                    componentType={this.props.type}
+                    />
                 {
-                    this.props.showTip && 
+                    this.props.showLip && 
                     <OneProgressiveLine 
                         data={this.props.lipData} type="lip" 
-                        sampleRate={this.props.sampleRate} playbackRate={this.props.playbackRate}/>
+                        sampleRate={this.props.sampleRate} playbackRate={this.props.playbackRate}
+                        componentType={this.props.type}
+                    />
+                        
                 }
                 {
-                    this.props.showLip &&
+                    this.props.showTip &&
                     <OneProgressiveLine 
                         data={this.props.tipData} type="tip" 
-                        sampleRate={this.props.sampleRate} playbackRate={this.props.playbackRate}/>
+                        sampleRate={this.props.sampleRate} playbackRate={this.props.playbackRate}
+                        componentType={this.props.type}
+                    />
                 }
                 {
                     this.props.showDorsum &&        
                     <OneProgressiveLine 
                         data={this.props.dorsumData} type="dorsum" 
-                        sampleRate={this.props.sampleRate}  playbackRate={this.props.playbackRate}/>
+                        sampleRate={this.props.sampleRate}  playbackRate={this.props.playbackRate}
+                        componentType={this.props.type}
+                    />
                 }
-            </div>
+            </Box>
+        )
+    }
+}
+
+class ExplorationLine extends Component {
+    constructor(props) {
+        super(props)
+    }
+    render() {
+        return (
+            <ProgressiveLine 
+                showLip={this.props.showLip}
+                showTip={this.props.showTip}
+                showDorsum={this.props.showDorsum}
+                audioData={this.props.audioData}
+                lipData={this.props.lipData}
+                tipData={this.props.tipData}
+                dorsumData={this.props.dorsumData}
+                sampleRate={this.props.sampleRate}
+                playbackRate={this.props.playbackRate}
+                type="exploration"
+            />
+           
+        )
+    }
+}
+
+
+class NarrativeLine extends Component {
+    constructor(props) {
+        super(props)
+    }
+
+    render() {
+        return(
+            <ProgressiveLine 
+                showLip={this.props.showLip}
+                showTip={this.props.showTip}
+                showDorsum={this.props.showDorsum}
+                audioData={this.props.audioData}
+                lipData={this.props.lipData}
+                tipData={this.props.tipData}
+                dorsumData={this.props.dorsumData}
+                sampleRate={this.props.sampleRate}
+                playbackRate={this.props.playbackRate}
+                type="narrative"
+            />
         )
     }
 }
@@ -146,4 +229,4 @@ class ProgressiveLine extends Component {
 
 
 
-export default ProgressiveLine;
+export {ProgressiveLine, ExplorationLine, NarrativeLine};
