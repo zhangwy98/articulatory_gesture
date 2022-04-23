@@ -108,11 +108,21 @@ class OneProgressiveLine extends Component {
     render() {
         return (
             <div>
-                {this.props.componentType == "exploration" &&
+            {this.props.componentType == "wordExploration" &&
                 <Box sx={{ margin: "10px 25px" }}>
                     <canvas 
                         height={130}
                         width={300}
+                        id={this.type}
+                        ref={this.chartRef}
+                    />
+                </Box>
+            }
+            {this.props.componentType == "phraseExploration" &&
+                <Box sx={{ margin: "10px 25px" }}>
+                    <canvas 
+                        height={150}
+                        width={600}
                         id={this.type}
                         ref={this.chartRef}
                     />
@@ -195,7 +205,7 @@ class ExplorationLine extends Component {
                 dorsumData={this.props.dorsumData}
                 sampleRate={this.props.sampleRate}
                 playbackRate={this.props.playbackRate}
-                type="exploration"
+                type={this.props.type}
             />
            
         )

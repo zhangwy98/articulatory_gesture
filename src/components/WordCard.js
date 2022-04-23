@@ -113,15 +113,20 @@ class WordCard extends React.Component {
         this.props.handleDelete(this.props.wordIdx)
     }
     render() {
+        const width = this.props.type == "word" ? 400 : 700
+        const titleWidth = this.props.type == "word" ? 200 : 400
+        const buttonWidth = this.props.type == "word" ? 180 : 160
+        const height = this.props.type == "word" ? 600 : 700
+        const explorationType = this.props.type == "word" ? "wordExploration" : "phraseExploration"
         return (
                 <div>
-                    <Box sx={{paddingTop: '20px', width: 500}}>
+                    <Box sx={{paddingTop: '20px', width: width}}>
                         <Stack alignItems="center"  justifyContent="center" 
                             direction="row" spacing={1}>
-                            <Typography sx={{width: 250}} align='left' variant="h4">
+                            <Typography sx={{width: titleWidth}} align='left' variant="h4">
                                 {this.props.word} 
                             </Typography>
-                            <Box sx={{ width: 100}}>
+                            <Box sx={{ width: buttonWidth}}>
                             {this.state.play === false && 
                                 <Button 
                                     variant="contained" onClick={this.playSegment}
@@ -133,19 +138,19 @@ class WordCard extends React.Component {
                                     sx={{ height: 40, width: 80, marginTop: 0.5}}
                                 >play</Button>}
                             </Box>
-                            <IconButton color='primary' 
+                            {this.props.type == "word" &&  <IconButton color='primary' 
                                         onClick={this.handleDelete}
                                         sx={{ width: 50, height: 50}}>
                                 <DeleteIcon sx={{ width: 30, height: 30}} />
-                            </IconButton>
+                            </IconButton>}
                         </Stack>
                     </Box>
-                    <Box sx={{paddingTop: '20px', width: 500}} >
+                    <Box sx={{paddingTop: '20px', width: width}} >
                         <Stack direction="row" 
                             // alignItems="center" 
                             justifyContent="center" 
                             spacing={4}>
-                            <Box sx={{width: 225}}>
+                            <Box sx={{width: titleWidth - 20}}>
                                 <Stack direction="column">
                                 <Stack  direction="row" spacing={0}>
                                     <FormControlLabel 
@@ -197,7 +202,7 @@ class WordCard extends React.Component {
                             
                         </Stack>
                     </Box>
-                    <Box sx={{ width: 500, height: 600}} >
+                    <Box sx={{ width: width, height: height}} >
                     {(this.state.play === true || this.state.playEnd === true) && 
                     <ExplorationLine 
                         showLip={this.state.showLip}
@@ -213,6 +218,7 @@ class WordCard extends React.Component {
                         playbackRate={this.state.playbackRate}
                         totalPlayCnt={this.state.totalPlayCnt}
                         key={this.state.totalPlayCnt}
+                        type={explorationType}
                     /> }
                     </Box>
                 </div>

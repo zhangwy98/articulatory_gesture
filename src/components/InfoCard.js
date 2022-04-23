@@ -62,6 +62,7 @@ class InfoCard extends React.Component {
                 <Typography variant="h6">
                     {this.props.text}
                 </Typography>
+                
             </Box>
         )
     }

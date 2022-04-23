@@ -8,7 +8,9 @@ import CssBaseline from '@mui/material/CssBaseline';
 import Grid from '@mui/material/Grid';
 import Box from '@mui/material/Box';
 import Stack from '@mui/material/Stack';
-import Toolbar from '@mui/material/Toolbar';
+import PropTypes from 'prop-types';
+import Tabs from '@mui/material/Tabs';
+import Tab from '@mui/material/Tab';
 import Typography from '@mui/material/Typography';
 import Container from '@mui/material/Container';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
@@ -49,6 +51,39 @@ const collections = {
     'A1': A1_collection,
     'D2': D2_collection
 }
+
+function TabPanel(props) {
+    const { children, value, index, ...other } = props;
+  
+    return (
+      <div
+        role="tabpanel"
+        hidden={value !== index}
+        id={`simple-tabpanel-${index}`}
+        aria-labelledby={`simple-tab-${index}`}
+        {...other}
+      >
+        {value === index && (
+          <Box sx={{ paddingLeft: 3, paddingRight: 3, paddingBottom: 3}}>
+            {children}
+          </Box>
+        )}
+      </div>
+    );
+  }
+  
+  TabPanel.propTypes = {
+    children: PropTypes.node,
+    index: PropTypes.number.isRequired,
+    value: PropTypes.number.isRequired,
+  };
+
+  function a11yProps(index) {
+    return {
+      id: `simple-tab-${index}`,
+      'aria-controls': `simple-tabpanel-${index}`,
+    };
+  }
 
 class WordButton extends React.Component {
     constructor(props) {
@@ -98,6 +133,7 @@ class CaseSelection extends React.Component {
                     <InputLabel id="case-selection">Dataset</InputLabel> 
                     <Select
                         value={this.props.currentCase}
+                        defaultValue='D2'
                         label='case'
                         onChange={this.handleChange}
                     >
@@ -115,7 +151,13 @@ class WordPage extends React.Component {
         super(props)
         this.state = {
             selectedWords: [],
-            case: 'None',
+            phraseModeSelectedWords: [],
+            phraseModeShow: 0,
+            phraseModeInfo: {
+                
+            },
+            case: 'D2',
+            mode: 1,
             sampleRate: D2_collection.gesture.sampleRate,
             audioData: D2_collection.gesture.audio,
             lipData: D2_collection.gesture.lip,
@@ -126,9 +168,17 @@ class WordPage extends React.Component {
             text: D2_collection.text
         }
         // initialization to D2 dataset
+        this.handleChangeMode = this.handleChangeMode.bind(this)
         this.handleClick = this.handleClick.bind(this)
+        this.handlePhraseModeClick = this.handlePhraseModeClick.bind(this)
+        this.handlePhraseModeRun = this.handlePhraseModeRun.bind(this)
         this.handleCaseSelection = this.handleCaseSelection.bind(this);
 
+    }
+    handleChangeMode(event, newMode) {
+        this.setState({
+            mode: newMode
+        })
     }
     handleClick(wordIdx) {
         let newState = this.state.selectedWords;
@@ -144,7 +194,63 @@ class WordPage extends React.Component {
             selectedWords: newState
         })
 
+    }
+    handlePhraseModeClick(wordIdx) {
+        let newState = this.state.phraseModeSelectedWords;
+        if (newState.includes(wordIdx)) {
+            if (newState[newState.length - 1] === wordIdx) {
+                newState.pop()
+                console.log('newState', newState)
+            } else {
+                // cut in the middle, restart
+                newState = []
+            }
+        } else {
+            if (newState.length === 0 || newState[newState.length - 1] === wordIdx - 1) {
+                newState.push(wordIdx)
+            } else {
+                // add another one, restart
+                newState = [wordIdx]
+            }
+        }
+        this.setState({
+            phraseModeSelectedWords: newState
+        })
     } 
+    handlePhraseModeRun() {
+        if (this.state.phraseModeSelectedWords.length > 0) {
+            const startIdx = this.state.phraseModeSelectedWords[0];
+            const endIdx = this.state.phraseModeSelectedWords[this.state.phraseModeSelectedWords.length - 1];
+            const startItem = this.state.wordList[startIdx];
+            const endItem = this.state.wordList[endIdx];
+            console.log(startItem, endItem)
+            const segStart = parseInt(startItem.startTime * this.state.sampleRate)
+            const segEnd = parseInt(endItem.endTime * this.state.sampleRate)
+            console.log(segStart, segEnd)
+            const audioSeg = this.state.audioData.slice(segStart, segEnd)
+            const lipSeg = this.state.lipData.slice(segStart, segEnd)
+            const tipSeg = this.state.tipData.slice(segStart, segEnd)
+            const dorsumSeg = this.state.dorsumData.slice(segStart, segEnd)
+            const words = this.state.phraseModeSelectedWords.map((itemIdx) => (
+                this.state.wordList[itemIdx].word
+            ))
+            const newPhraseObj = {
+                audioFile: this.state.audioFile,
+                audioData: audioSeg,
+                lipData: lipSeg,
+                tipData: tipSeg,
+                dorsumData: dorsumSeg,
+                segStart: segStart,
+                segEnd: segEnd,
+                word: words.join(' ')
+            }
+            this.setState({
+                phraseModeShow: this.state.phraseModeShow + 1,
+                phraseModeInfo: newPhraseObj
+            })
+        }
+        
+    }
     handleCaseSelection(newCase) {
         this.setState({
             case: newCase,
@@ -180,10 +286,11 @@ class WordPage extends React.Component {
             let tipSeg = this.state.tipData.slice(segStart, segEnd)
             let dorsumSeg = this.state.dorsumData.slice(segStart, segEnd)
             return (
-                <Grid item key={idx} >  
+                <Grid item key={itemIdx} >  
                     <Card sx={{ display: 'flex', flexDirection: 'column'}}>
                     <WordCard
-                        wordIdx={idx}
+                        type="word"
+                        wordIdx={itemIdx}
                         audioFile={this.state.audioFile}
                         audioData={audioSeg}
                         lipData={lipSeg}
@@ -199,6 +306,34 @@ class WordPage extends React.Component {
                 </Grid>
             )
         })
+
+        const phraseBar = this.state.wordList.map((item) => (
+            <Grid item key={item.idx}>
+                <WordButton item={item}
+                            onClick={this.handlePhraseModeClick}
+                            selectedWords={this.state.phraseModeSelectedWords} />
+            </Grid>
+        ))
+        
+        const phraseCard = (
+            <Card sx={{ diaplay: 'flex', flexDirection: 'column'}}>
+                <WordCard
+                    key={this.state.phraseModeShow}
+                    type="phrase"
+                    wordIdx={0}
+                    audioFile={this.state.phraseModeInfo.audioFile}
+                    audioData={this.state.phraseModeInfo.audioData}
+                    lipData={this.state.phraseModeInfo.lipData}
+                    tipData={this.state.phraseModeInfo.tipData}
+                    dorsumData={this.state.phraseModeInfo.dorsumData}
+                    sampleRate={this.state.sampleRate}
+                    segStart={this.state.phraseModeInfo.segStart}
+                    segEnd={this.state.phraseModeInfo.segEnd}
+                    word={this.state.phraseModeInfo.word}
+                />
+            </Card>
+        )
+
 
         return (
             <ThemeProvider theme={theme}>
@@ -240,7 +375,7 @@ class WordPage extends React.Component {
                             
                             <Stack direction="row"
                                 alignItems="center"  justifyContent="left" 
-                                sx={{ marginBottom: "20px"}}
+                                sx={{ marginBottom: "0px"}}
                             >
                                 <Typography variant="h6">
                                     Start by selecting a dataset and have fun :)
@@ -249,7 +384,7 @@ class WordPage extends React.Component {
                                 />
                             </Stack>
                             
-                            <Box >
+                            <Box sx={{marginBottom: 5}}>
                                 <InfoCard 
                                     key={this.state.case}
                                     audioFile={this.state.audioFile}
@@ -257,18 +392,68 @@ class WordPage extends React.Component {
                                     audioData={this.state.audioData}
                                     text={this.state.text}
                                 />
-                                <Grid container spacing={2} sx={{ marginTop: 5, marginBottom: 5}}>
-                                    {wordBar}
-                                </Grid>
+                                
                             </Box>
+                            <Box sx={{ flexGrow: 1, bgcolor: 'background.paper', display: 'flex', 'paddingBottom': 20}}> 
+                                <Tabs 
+                                    orientation='vertical'
+                                    align='left'
+                                    value={this.state.mode} 
+                                    onChange={this.handleChangeMode} 
+                                    aria-label="narrative section tab"
+                                    sx={{ borderRight: 1, borderColor: 'divider', width: 200 }}
+        
+                                >
+                                    <Tab label='Word mode' {...a11yProps(0)} />
+                                    <Tab label='Phrase mode' {...a11yProps(1)} />
+                                    
+                                </Tabs>
+                                <TabPanel value={this.state.mode} index={0}>
+                                    <Typography
+                                        align='left'
+                                        variant='h6'>
+                                    Word Mode
+                                    </Typography>
+                                    <Typography
+                                        align='left'
+                                        color='text.secondary'>
+                                    Each word will be presented in a single card.
+                                    </Typography>
+                                    <Box sx={{width: 900}}>
+                                    <Grid container spacing={2} sx={{paddingTop: 2, marginBottom: 5}}>
+                                        {wordBar}
+                                    </Grid>
+                                    <Grid container spacing={8}>
+                                        {wordCards}
+                                    </Grid>
+                                    </Box>
+                                </TabPanel>
+                                <TabPanel value={this.state.mode} index={1}>
+                                    <Box sx={{width: 800}}>
+                                        <Typography
+                                            align='left'
+                                            variant='h6'>
+                                        Phrase Mode
+                                        </Typography>
+                                        <Typography
+                                            align='left'
+                                            color='text.secondary'>
+                                        Select a sequence of continous words and the whole phrases will be presented and click the SHOW GESTURE button. If you select a word that is not directly following the previous one, the selection will be restarted.
+                                        </Typography>
+                                        <Grid container spacing={2} sx={{paddingTop: 2, marginBottom: 2}}>
+                                            {phraseBar}
+                                            <Button sx={{padding: "25px 50px 25px"}} onClick={this.handlePhraseModeRun}>
+                                                Show gesture
+                                            </Button>
+                                        </Grid>
+                                        {this.state.phraseModeShow > 0 && phraseCard}
+                                    </Box>
+                                </TabPanel>
+                            </Box>
+                            
                             
                         </Container>
                     </Box>
-                    <Container>
-                        <Grid container spacing={8}>
-                            {wordCards}
-                        </Grid>
-                    </Container>
                 </main>
             </ThemeProvider>
         )
