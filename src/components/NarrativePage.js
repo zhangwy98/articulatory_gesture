@@ -343,6 +343,9 @@ class NarrativePage extends React.Component {
                                     <TitleH3 
                                         text="Lip Gesture"
                                     />
+                                    <Paragraph
+                                        text="[p] (plosive), [v] (fricative) and [m] (nasal) are three typical consonants that involve contriction caused by the lower lip. You can see a lip raise before the real production of the sound."
+                                    />
                                     <Grid container width={850}>
                                         {typicalExampleLipElement}
                                     </Grid>
@@ -351,6 +354,8 @@ class NarrativePage extends React.Component {
                                     <TitleH3
                                         text="Tip Gesture"  
                                     />
+                                    <Paragraph
+                                        text="[t] [d] (plosive), [n] (nasal), [ch] (affricate), [s] [sh] [zh] (fricative) are seven typical consonants that involve contriction caused by the tongue tip. You can see a tip raise before the real production of the sound." />
                                     <Grid container width={850}>
                                         {typicalExampleTipElement}
                                     </Grid>
@@ -358,6 +363,9 @@ class NarrativePage extends React.Component {
                                 <TabPanel value={this.state.contentValue} index={2}>
                                     <TitleH3
                                         text="Dorsum Gesture"
+                                    />
+                                     <Paragraph
+                                        text="[g] and [k] (plosive) are twp typical consonants that involve contriction caused by the tongue dorsum. You can see a dorsum raise before the real production of the sound."
                                     />                         
                                     <Grid container width={850}>
                                         {typicalExampleDorsumElement}
