@@ -115,15 +115,16 @@ class WordCard extends React.Component {
     render() {
         const width = this.props.type == "word" ? 400 : 700
         const titleWidth = this.props.type == "word" ? 200 : 400
-        const buttonWidth = this.props.type == "word" ? 180 : 160
+        const buttonWidth = this.props.type == "word" ? 160 : 160
         const height = this.props.type == "word" ? 600 : 700
+        const paddingLeft = this.props.type == "word" ? 2 : 0
         const explorationType = this.props.type == "word" ? "wordExploration" : "phraseExploration"
         return (
                 <div>
                     <Box sx={{paddingTop: '20px', width: width}}>
                         <Stack alignItems="center"  justifyContent="center" 
                             direction="row" spacing={1}>
-                            <Typography sx={{width: titleWidth}} align='left' variant="h4">
+                            <Typography sx={{width: titleWidth, paddingLeft: paddingLeft}} align='left' variant="h4">
                                 {this.props.word} 
                             </Typography>
                             <Box sx={{ width: buttonWidth}}>
